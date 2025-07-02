@@ -7,7 +7,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Moon, Sun, Plus, Search, User, LogOut, Heart, Calendar, Home } from "lucide-react"
 import { useAuth } from "@/contexts/AuthContext"
 import { useTheme } from "@/contexts/ThemeContext"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useIsMobile } from "@/hooks/use-mobile"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu"
 
 interface HeaderProps {
   currentView: string
@@ -19,6 +20,7 @@ export default function Header({ currentView, setCurrentView, onAddRecipe }: Hea
   const { user, logout } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const [searchQuery, setSearchQuery] = useState("")
+  const isMobile = useIsMobile()
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -91,6 +93,25 @@ export default function Header({ currentView, setCurrentView, onAddRecipe }: Hea
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
+                {/* Mobile Navigation Items */}
+                {isMobile && (
+                  <>
+                    <DropdownMenuItem onClick={() => setCurrentView("recipes")}>
+                      <Home className="mr-2 h-4 w-4" />
+                      <span>Recipes</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setCurrentView("meal-planner")}>
+                      <Calendar className="mr-2 h-4 w-4" />
+                      <span>Meal Planner</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setCurrentView("collections")}>
+                      <Heart className="mr-2 h-4 w-4" />
+                      <span>Collections</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </>
+                )}
+
                 <DropdownMenuItem onClick={() => setCurrentView("profile")}>
                   <User className="mr-2 h-4 w-4" />
                   <span>Profile</span>
@@ -99,10 +120,12 @@ export default function Header({ currentView, setCurrentView, onAddRecipe }: Hea
                   <Heart className="mr-2 h-4 w-4" />
                   <span>Favorites</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setCurrentView("collections")}>
-                  <Heart className="mr-2 h-4 w-4" />
-                  <span>My Collections</span>
-                </DropdownMenuItem>
+                {!isMobile && (
+                  <DropdownMenuItem onClick={() => setCurrentView("collections")}>
+                    <Heart className="mr-2 h-4 w-4" />
+                    <span>My Collections</span>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem onClick={logout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>

@@ -4,8 +4,9 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Search, User, LogOut, Heart, Calendar, Plus, Utensils, Leaf, BookOpen } from "lucide-react"
+import { Search, User, LogOut, Heart, Calendar, Plus, Utensils, Leaf, BookOpen, Home } from "lucide-react"
 import { useAuth } from "@/contexts/AuthContext"
+import { useIsMobile } from "@/hooks/use-mobile"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +24,7 @@ interface TekaHeaderProps {
 export default function TekaHeader({ currentView, setCurrentView, onAddRecipe }: TekaHeaderProps) {
   const { user, logout } = useAuth()
   const [searchQuery, setSearchQuery] = useState("")
+  const isMobile = useIsMobile()
 
   return (
     <header className="bg-[#F4D03F] border-b border-[#F1C40F] sticky top-0 z-50">
@@ -139,6 +141,41 @@ export default function TekaHeader({ currentView, setCurrentView, onAddRecipe }:
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
+                {/* Mobile Navigation Items */}
+                {isMobile && (
+                  <>
+                    <DropdownMenuItem onClick={() => setCurrentView("home")}>
+                      <Home className="mr-2 h-4 w-4" />
+                      <span>Home</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setCurrentView("explore")}>
+                      <Search className="mr-2 h-4 w-4" />
+                      <span>Explore Recipes</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setCurrentView("ingredients")}>
+                      <Leaf className="mr-2 h-4 w-4" />
+                      <span>Vietnamese Ingredients</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setCurrentView("techniques")}>
+                      <Utensils className="mr-2 h-4 w-4" />
+                      <span>Cooking Techniques</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setCurrentView("seasonal")}>
+                      <Calendar className="mr-2 h-4 w-4" />
+                      <span>Seasonal Recipes</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setCurrentView("blog")}>
+                      <BookOpen className="mr-2 h-4 w-4" />
+                      <span>Food Stories</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setCurrentView("about")}>
+                      <User className="mr-2 h-4 w-4" />
+                      <span>About Us</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </>
+                )}
+
                 <DropdownMenuItem onClick={() => setCurrentView("profile")}>
                   <User className="mr-2 h-4 w-4" />
                   <span>Profile</span>
@@ -152,11 +189,15 @@ export default function TekaHeader({ currentView, setCurrentView, onAddRecipe }:
                   <span>Meal Planner</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => setCurrentView("blog")}>
-                  <BookOpen className="mr-2 h-4 w-4" />
-                  <span>Food Stories</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
+                {!isMobile && (
+                  <>
+                    <DropdownMenuItem onClick={() => setCurrentView("blog")}>
+                      <BookOpen className="mr-2 h-4 w-4" />
+                      <span>Food Stories</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </>
+                )}
                 <DropdownMenuItem onClick={logout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>

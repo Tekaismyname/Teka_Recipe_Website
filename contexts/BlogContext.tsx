@@ -243,7 +243,7 @@ Next time you bite into a bánh mì, remember you're tasting history, culture, a
     readTime: 6,
     category: "Street Food",
     tags: ["banh mi", "street food", "fusion", "history", "sandwich"],
-    imageUrl: "/images/Stories/Beef-Pho_6.png",
+    imageUrl: "/images/Stories/banh mi recipe.png",
     featured: true,
     views: 980,
     likes: 67,
